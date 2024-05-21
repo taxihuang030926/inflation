@@ -1,0 +1,70 @@
+<html>
+<head>
+  <title>Express</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h1>Express</h1>
+  <p>Welcome to Express</p>
+
+  <form id="price-search-form">
+    <label for="yr">Year:</label>
+    <input id="yr" name="yr" type="text"><br><br>
+    <label for="season">Season:</label>
+    <input id="season" name="season" type="text"><br><br>
+    <label for="wti">WTI:</label>
+    <input id="wti" name="wti-insert" type="text"><br><br>
+    <label for="dub">DUB:</label>
+    <input id="dub" name="dub-insert" type="text"><br><br>
+    <label for="wti">BRENT:</label>
+    <input id="brent" name="brent-insert" type="text"><br><br>
+    <div>
+      <input type="submit" name="search-button" value="Search">
+      <input type="submit" name="insert-button" value="Insert">
+      <input type="submit" name="all-button" value="All">
+    </div>
+
+  </form>
+
+  <p id="results"></p>
+
+  <script>
+    // 將上面表單的資料，透過 fetch async await 根據按下的是 search按鈕 或 insert按鈕 來發送 POST 請求到 /api/search 或 /api/input
+    // 並在成功後顯示伺服器回傳的【純文字】訊息
+    document.getElementById('price-search-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const year = document.getElementById('yr').value;
+      const season = document.getElementById('season').value;
+      const wti = document.getElementById('wti').value;
+      const dub = document.getElementById('dub').value;
+      const brent = document.getElementById('brent').value;
+      const button = e.submitter.name;
+      let url = '';
+      if (button === 'search-button') {
+        url = '/api/search';
+      } else if (button === 'insert-button') {
+        url = '/api/input';
+      } else if (button === 'all-button') {
+        url = '/api/price';
+      }
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          year,
+          season,
+          wti,
+          dub,
+          brent
+        })
+      });
+      const data = await res.text();
+      document.getElementById('results').innerText = data;
+    });
+  </script>
+</body>
+
+</html>
