@@ -63,21 +63,31 @@ app.post('/api/search', (req, res) => {
             row.formatted = `${row.yr}年 Q${row.season} WTI: ${row.wti} DUB: ${row.dub} BRENT: ${row.brent} (USD/桶)`;
             res.send(row.formatted);
         } else {
-            res.send(rows);
+            res.send("No data found");
         }
     });
 });
 
 // 撰寫 post /api/insert 路由，使用 SQLite 新增一筆油價資料 (yr, season, wti, dub, brent) 回傳文字資料顯示新增的 yr 和 season
 app.post('/api/insert', (req, res) => {
-    db.run('INSERT INTO IntCruOilPrice (yr, season, wti, dub, brent) VALUES (?, ?, ?, ?, ?)', [req.body.yr, req.body.season, req.body.wti, req.body.dub, req.body.brent], function(err) {
+    db.run('INSERT INTO IntCruOilPrice (yr, season, wti, dub, brent) VALUES (?, ?, ?, ?, ?)', [parseInt(req.body.year), parseInt(req.body.season), parseFloat(req.body.wti), parseFloat(req.body.dub), parseFloat(req.body.brent)], function(err) {
         if (err) {
             res.status(500).json({ error: err.message });
             return;
         }
-        res.json(`a new row has been added: ${req.body.yr} Q${req.body.season}`);
+        res.send(`新增成功: ${req.body.year}年 Q${req.body.season}`);
     });
 });
 
-
+app.post('/api/searchRange', (req, res) => {
+    const startYear = parseInt(req.body.startYear);
+    const endYear = parseInt(req.body.endYear);
+    db.all('SELECT * FROM IntCruOilPrice WHERE yr >= ? AND yr <= ? ORDER BY yr, season', [startYear, endYear], (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json(rows);
+    });
+});
 

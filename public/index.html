@@ -5,29 +5,41 @@
 </head>
 
 <body>
-  <h1>Express</h1>
-  <p>Welcome to Express</p>
+  <div style="display: flex;">
+    <form id="price-search-form">
+      <label for="yr">Year:</label>
+      <input id="yr" name="yr" type="text"><br><br>
+      <label for="season">Season:</label>
+      <input id="season" name="season" type="text"><br><br>
+      <label for="wti">WTI:</label>
+      <input id="wti" name="wti-insert" type="text"><br><br>
+      <label for="dub">DUB:</label>
+      <input id="dub" name="dub-insert" type="text"><br><br>
+      <label for="wti">BRENT:</label>
+      <input id="brent" name="brent-insert" type="text"><br><br>
+      <div>
+        <input type="submit" name="search-button" value="Search">
+        <input type="submit" name="insert-button" value="Insert">
+        <input type="submit" name="all-button" value="All">
+      </div>
 
-  <form id="price-search-form">
-    <label for="yr">Year:</label>
-    <input id="yr" name="yr" type="text"><br><br>
-    <label for="season">Season:</label>
-    <input id="season" name="season" type="text"><br><br>
-    <label for="wti">WTI:</label>
-    <input id="wti" name="wti-insert" type="text"><br><br>
-    <label for="dub">DUB:</label>
-    <input id="dub" name="dub-insert" type="text"><br><br>
-    <label for="wti">BRENT:</label>
-    <input id="brent" name="brent-insert" type="text"><br><br>
-    <div>
-      <input type="submit" name="search-button" value="Search">
-      <input type="submit" name="insert-button" value="Insert">
-      <input type="submit" name="all-button" value="All">
-    </div>
+    </form>
 
+    <img src="./images/IMG_1560.JPG" alt="Democracy Delivery Service" style="width: 500px">
+  </div>
+
+
+  <form id="range-search-form">
+    <label for="startYear">Start Year:</label>
+    <input id="startYear" name="startYear" type="text"><br><br>
+    <label for="endYear">End Year:</label>
+    <input id="endYear" name="endYear" type="text"><br><br>
+    <input type="submit" value="Search Range">
   </form>
 
   <p id="results"></p>
+
+  <canvas id="chart"></canvas>
 
   <script>
     // 將上面表單的資料，透過 fetch async await 根據按下的是 search按鈕 或 insert按鈕 來發送 POST 請求到 /api/search 或 /api/input
@@ -63,6 +75,71 @@
       });
       const data = await res.text();
       document.getElementById('results').innerText = data;
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.getElementById('range-search-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const startYear = document.getElementById('startYear').value;
+      const endYear = document.getElementById('endYear').value;
+      const res = await fetch('/api/searchRange', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          startYear,
+          endYear
+        })
+      });
+      const data = await res.json();
+      const labels = data.map(row => `${row.yr} Q${row.season}`);
+      const wtiData = data.map(row => row.wti);
+      const dubData = data.map(row => row.dub);
+      const brentData = data.map(row => row.brent);
+      new Chart(document.getElementById('chart'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'WTI',
+            data: wtiData,
+            borderColor: 'rgb(255, 99, 132)',
+            fill: false
+          }, {
+            label: 'DUB',
+            data: dubData,
+            borderColor: 'rgb(75, 192, 192)',
+            fill: false
+          }, {
+            label: 'BRENT',
+            data: brentData,
+            borderColor: 'rgb(153, 102, 255)',
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Year and Season'
+              }
+            },
+            y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Price (USD/桶)'
+              }
+            }
+          }
+        }
+      });
     });
   </script>
 </body>
