@@ -4,8 +4,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sqlite3 = require('sqlite3').verbose(); // 引入 sqlite3 模組
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const indexRouter = require('https://taxihuang030926.github.io/inflation/routes/index');
+const usersRouter = require('https://taxihuang030926.github.io/inflation/routes/users');
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use('/users', usersRouter);
 module.exports = app;
 
 // 連接資料庫
-let db = new sqlite3.Database('./db/InternationalCrudeOilPrice2000_2024.db', (err) => {
+let db = new sqlite3.Database('https://taxihuang030926.github.io/inflation/db/InternationalCrudeOilPrice2000_2024.db', (err) => {
     if (err) {
         console.error('Connection Failed to Database:', err.message);
     } else {

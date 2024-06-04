@@ -87,11 +87,11 @@
         const button = e.submitter.name;
         let url = '';
         if (button === 'search-button') {
-          url = './api/search';
+          url = 'https://taxihuang030926.github.io/inflation/api/search';
         } else if (button === 'insert-button') {
-          url = './api/input';
+          url = 'https://taxihuang030926.github.io/inflation/api/input';
         } else if (button === 'all-button') {
-          url = './api/price';
+          url = 'https://taxihuang030926.github.io/inflation/api/price';
         }
         const res = await fetch(url, {
           method: 'POST',
@@ -197,5 +197,4 @@
     </a>
   </footer>
 </body>
-
 </html>
