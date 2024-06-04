@@ -1,8 +1,109 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+@charset "UTF-8";
+@import url('https://fonts.cdnfonts.com/css/gg-sans-2');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/abc-ginto-nord-unlicensed-trial');
 
 a {
   color: #00B7FF;
+}
+
+:root {
+  --main-bg-color:#313338;
+  --secondary-bg-color: #2B2D31;
+  --doe-green: #2abb10;
+  --font-color-1:#FFF;
+  --font-color-2:#F2F3F5;
+}
+
+body {
+  background-color: #313338;
+  font-size: 100%;
+  background-attachment: fixed;
+  font-family: 'gg sans Normal', sans-serif;
+  color: var(--font-color-1);
+}
+
+.contents {
+  display: flex;
+  margin: 100px 30px;
+}
+
+.contents > * {
+  margin: 70px;
+}
+
+.word-content {
+  text-align: left;
+  padding: 50px;
+
+}
+
+h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 3em;
+  font-weight: bold;
+  color: var(--doe-green);
+}
+
+h2 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: var(--font-color-2);
+}
+
+input {
+  font-family: 'gg sans Normal', sans-serif;
+  font-weight: 40;
+  font-size: 0.75em;
+  color: var(--main-bg-color);
+}
+
+.button-set {
+  display: flex;
+}
+
+a.btn {
+  font-family: 'gg-sans Semibold', sans-serif;
+  font-weight: 700;
+  padding: 10px 20px;
+  color: var(--font-color-1);
+  background-color: var(--doe-green);
+  border: none;
+  border-radius: 50px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0 30px;
+}
+
+.footer {
+  margin: 30px 0 0;
+  background-color: var(--secondary-bg-color);
+  position: static;
+  bottom: 0;
+  width: 100%;
+  height: 10rem;
+  display: flex;
+}
+
+.footer > a {
+  height: 25px;
+  width: 25px;
+  margin: 30px 15px;
+}
+
+a > img {
+  height: 25px;
+}
+
+.seal_doe {
+  height: 60px;
+  position: absolute;
+  right: 100px;
+}
+
+.seal_doe > img {
+  height: 60px;
 }
