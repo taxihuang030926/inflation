@@ -4,8 +4,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sqlite3 = require('sqlite3').verbose(); // 引入 sqlite3 模組
 
-const indexRouter = require('https://taxihuang030926.github.io/inflation/routes/index');
-const usersRouter = require('https://taxihuang030926.github.io/inflation/routes/users');
+const indexRouter = require('./inflation/routes/index');
+const usersRouter = require('./inflation/routes/users');
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use('/users', usersRouter);
 module.exports = app;
 
 // 連接資料庫
-let db = new sqlite3.Database('https://taxihuang030926.github.io/inflation/db/InternationalCrudeOilPrice2000_2024.db', (err) => {
+let db = new sqlite3.Database('./inflation/db/InternationalCrudeOilPrice2000_2024.db', (err) => {
     if (err) {
         console.error('Connection Failed to Database:', err.message);
     } else {
@@ -68,7 +68,7 @@ app.get('/api/search/:year/:season', (req, res) => {
 });
 
 // 撰寫 post /api/insert 路由，使用 SQLite 新增一筆油價資料 (yr, season, wti, dub, brent) 回傳文字資料顯示新增的 yr 和 season
-app.get('/api/insert', (req, res) => {
+app.post('/api/insert', (req, res) => {
     db.run('INSERT INTO IntCruOilPrice (yr, season, wti, dub, brent) VALUES (?, ?, ?, ?, ?)', [parseInt(req.body.year), parseInt(req.body.season), parseFloat(req.body.wti), parseFloat(req.body.dub), parseFloat(req.body.brent)], function(err) {
         if (err) {
             res.status(500).json({ error: err.message });
