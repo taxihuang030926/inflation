@@ -40,19 +40,18 @@ db.run(`CREATE TABLE IF NOT EXISTS IntCruOilPrice (
 )`);
 
 // 撰寫 /api/price 路由，用 POST 取得所有季度的價格
-app.post('/api/price', (req, res) => {
+app.get('/api/price', (req, res) => {
     db.all('SELECT * FROM IntCruOilPrice', (err, rows) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
         }
         res.json(rows);
-        res.send(rows);
     });
 });
 
 // 撰寫 post /api 路由，使用 SQLite 查詢某 year 和 season 提供的資料
-app.post('/api/search', (req, res) => {
+app.get('/api/search/:year/:season', (req, res) => {
     db.all('SELECT * FROM IntCruOilPrice WHERE yr = ? AND season = ?', [parseInt(req.body.year), parseInt(req.body.season)], (err, rows) => {
         if (err) {
             res.status(500).json({ error: err.message });
@@ -69,7 +68,7 @@ app.post('/api/search', (req, res) => {
 });
 
 // 撰寫 post /api/insert 路由，使用 SQLite 新增一筆油價資料 (yr, season, wti, dub, brent) 回傳文字資料顯示新增的 yr 和 season
-app.post('/api/insert', (req, res) => {
+app.get('/api/insert', (req, res) => {
     db.run('INSERT INTO IntCruOilPrice (yr, season, wti, dub, brent) VALUES (?, ?, ?, ?, ?)', [parseInt(req.body.year), parseInt(req.body.season), parseFloat(req.body.wti), parseFloat(req.body.dub), parseFloat(req.body.brent)], function(err) {
         if (err) {
             res.status(500).json({ error: err.message });
@@ -79,7 +78,7 @@ app.post('/api/insert', (req, res) => {
     });
 });
 
-app.post('/api/searchRange', (req, res) => {
+app.get('/api/searchRange', (req, res) => {
     const startYear = parseInt(req.body.startYear);
     const endYear = parseInt(req.body.endYear);
     db.all('SELECT * FROM IntCruOilPrice WHERE yr >= ? AND yr <= ? ORDER BY yr, season', [startYear, endYear], (err, rows) => {

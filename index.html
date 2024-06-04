@@ -93,19 +93,7 @@
         } else if (button === 'all-button') {
           url = 'https://taxihuang030926.github.io/inflation/api/price';
         }
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            year,
-            season,
-            wti,
-            dub,
-            brent
-          })
-        });
+        const res = await fetch(url);
         const data = await res.text();
         document.getElementById('results').innerText = data;
       });
@@ -117,16 +105,8 @@
         e.preventDefault();
         const startYear = document.getElementById('startYear').value;
         const endYear = document.getElementById('endYear').value;
-        const res = await fetch('/api/searchRange', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            startYear,
-            endYear
-          })
-        });
+        const url = `/api/searchRange/${startYear}/${endYear}`;
+        const res = await fetch(url);
         const data = await res.json();
         const labels = data.map(row => `${row.yr} Q${row.season}`);
         const wtiData = data.map(row => row.wti);
