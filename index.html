@@ -87,11 +87,11 @@
         const button = e.submitter.name;
         let url = '';
         if (button === 'search-button') {
-          url = '/api/search';
+          url = './api/search';
         } else if (button === 'insert-button') {
-          url = '/api/input';
+          url = './api/input';
         } else if (button === 'all-button') {
-          url = '/api/price';
+          url = './api/price';
         }
         const res = await fetch(url, {
           method: 'POST',
